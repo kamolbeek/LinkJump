@@ -113,7 +113,27 @@ export default function RedirectClient({
         
         <div style={styles.body}>
           <div style={styles.logoRow}>
-            <div style={styles.logoDot} />
+            <svg 
+              viewBox="0 0 100 100" 
+              width="24" 
+              height="24" 
+              fill="none" 
+              stroke="#ffffff" 
+              strokeWidth="6" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{ marginRight: "4px" }}
+            >
+              {/* Leaping chain panther SVG */}
+              {/* Back leg & tail */}
+              <path d="M 22,58 C 16,58 12,38 22,25 C 25,20 29,22 28,30 C 26,38 22,50 26,58 M 18,66 C 12,72 8,78 14,82 C 20,86 25,78 28,72" />
+              {/* Interlocking links */}
+              <rect x="25" y="42" width="32" height="16" rx="8" transform="rotate(-30 41 50)" />
+              <rect x="45" y="32" width="32" height="16" rx="8" transform="rotate(-30 61 40)" />
+              {/* Front head & legs */}
+              <path d="M 76,28 C 80,22 86,20 90,25 C 92,27 91,30 88,31 C 85,32 81,36 79,42 M 70,38 C 75,44 82,50 79,56 C 76,62 70,54 66,48" />
+            </svg>
             <span style={styles.logoText}>LINKJUMP</span>
           </div>
 
@@ -193,12 +213,6 @@ const styles = {
     alignItems: "center",
     gap: "0.5rem",
     marginBottom: "1.5rem",
-  },
-  logoDot: {
-    width: "8px",
-    height: "8px",
-    borderRadius: "50%",
-    backgroundColor: "#ffffff",
   },
   logoText: {
     fontWeight: "700",

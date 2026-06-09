@@ -274,7 +274,27 @@ export default function HomePage() {
       <header className="site-header" role="banner">
         <div className="container-x header-inner">
           <a href="/" className="logo-link" aria-label="LinkJump Homepage">
-            <div className="logo-dot" />
+            <svg 
+              className="logo-svg" 
+              viewBox="0 0 100 100" 
+              width="28" 
+              height="28" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="6" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {/* Leaping chain panther SVG */}
+              {/* Back leg & tail */}
+              <path d="M 22,58 C 16,58 12,38 22,25 C 25,20 29,22 28,30 C 26,38 22,50 26,58 M 18,66 C 12,72 8,78 14,82 C 20,86 25,78 28,72" />
+              {/* Interlocking links */}
+              <rect x="25" y="42" width="32" height="16" rx="8" transform="rotate(-30 41 50)" />
+              <rect x="45" y="32" width="32" height="16" rx="8" transform="rotate(-30 61 40)" />
+              {/* Front head & legs */}
+              <path d="M 76,28 C 80,22 86,20 90,25 C 92,27 91,30 88,31 C 85,32 81,36 79,42 M 70,38 C 75,44 82,50 79,56 C 76,62 70,54 66,48" />
+            </svg>
             <span>LINKJUMP</span>
           </a>
           <nav className="header-nav" role="navigation" aria-label="Main navigation">

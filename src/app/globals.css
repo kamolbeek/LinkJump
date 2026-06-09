@@ -120,11 +120,13 @@ body {
   letter-spacing: -0.02em;
 }
 
-.logo-dot {
-  width: 8px;
-  height: 8px;
-  background: var(--text-main);
-  border-radius: 50%;
+.logo-svg {
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  color: var(--text-main);
+}
+
+.logo-link:hover .logo-svg {
+  transform: translateY(-3px) scale(1.08) rotate(-8deg);
 }
 
 .header-nav {
