@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
-import { detectPlatform, PLATFORM_ICONS } from "@/lib/platforms";
+import { detectPlatform, PLATFORM_ICONS, PLATFORM_COLORS } from "@/lib/platforms";
 import { translations, LangType } from "@/lib/translations";
 import { parseVoiceCommand } from "@/lib/voice-commands";
 
@@ -508,88 +508,62 @@ export default function HomePage() {
               </div>
             )}
 
-            {/* JPRQ Style Terminal Output Window for successful redirects */}
+            {/* iOS-Inspired Result Card */}
             {result && (
-              <div className="terminal-window" id="result-card" role="region" aria-label="Generation result details">
-                <div className="terminal-topbar">
-                  <span>{t.terminalTitle}</span>
-                  <div className="terminal-dots">
-                    <div className="terminal-dot" />
-                    <div className="terminal-dot" />
-                    <div className="terminal-dot" />
-                  </div>
-                </div>
-                <div className="terminal-body" aria-live="polite">
-                  <div className="term-row">
-                    <span className="term-prompt">$</span> linkjump expose {result.platform}
-                  </div>
-                  <div className="term-row">
-                    <span className="term-label">{t.termLabelTunnel}</span>
-                    <span className="term-val-active">{t.termActive}</span>
-                  </div>
-                  <div className="term-row">
-                    <span className="term-label">{t.termLabelPublic}</span>
-                    <span
-                      className="term-val-link"
+              <div className="ios-result-card" id="result-card" role="region" aria-label="Generation result details">
+                <div className="ios-card-main">
+                  <div className="ios-link-wrapper">
+                    <div 
+                      className="ios-platform-icon" 
+                      style={{ 
+                        backgroundColor: `${PLATFORM_COLORS[result.platform.toLowerCase()] || '#6366F1'}15`, 
+                        color: PLATFORM_COLORS[result.platform.toLowerCase()] || '#6366F1' 
+                      }}
+                    >
+                      {PLATFORM_ICONS[result.platform.toLowerCase()] || "🔗"}
+                    </div>
+                    <span 
+                      className="ios-link-text"
                       onClick={() => handleCopy()}
-                      title="Nusxa olish uchun bosing"
                       role="button"
                       tabIndex={0}
                       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleCopy(); }}
+                      title={t.termCopyBtn}
                       aria-label={`Short link: ${result.shortUrl}. Press Enter to copy.`}
                     >
                       {result.shortUrl}
                     </span>
                   </div>
-                  <div className="term-row">
-                    <span className="term-label">{t.termLabelTarget}</span>
-                    <span className="term-val-original">{result.originalUrl}</span>
-                  </div>
-                  <div className="term-row">
-                    <span className="term-label">{t.termLabelPlatform}</span>
-                    <span className="term-val-platform">{result.platform.toUpperCase()}</span>
-                  </div>
-                  <div className="term-row" style={{ marginTop: "1rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span style={{ color: "var(--text-gray)", fontSize: "12px" }}>{t.termConnection}</span>
-                    <button
-                      className={`term-copy-btn ${copied ? "copied" : ""}`}
-                      onClick={() => handleCopy()}
-                      aria-label="Copy short link to clipboard"
-                    >
-                      {copied ? t.termCopiedBtn : t.termCopyBtn}
-                    </button>
-                  </div>
-
-                  {/* Cheklov ma'lumotlari */}
-                  {(result.maxClicks !== null || result.expiresAt !== null) && (
-                    <div style={{
-                      marginTop: "0.75rem",
-                      padding: "0.5rem 0.75rem",
-                      background: "rgba(234, 179, 8, 0.05)",
-                      border: "1px solid rgba(234, 179, 8, 0.15)",
-                      borderRadius: "6px",
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: "12px",
-                    }}>
-                      <div style={{ display: "flex", gap: "1rem" }}>
-                        <div>
-                          <span style={{ color: "#71717a" }}>{t.termLabelClicks}: </span>
-                          <span style={{ color: "#eab308" }}>
-                            {result.maxClicks !== null ? `0 / ${result.maxClicks}` : t.termUnlimited}
-                          </span>
-                        </div>
-                        <div>
-                          <span style={{ color: "#71717a" }}>{t.termLabelExpires}: </span>
-                          <span style={{ color: "#eab308" }}>
-                            {result.expiresAt
-                              ? new Date(result.expiresAt).toLocaleString()
-                              : t.termNever}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                  <button
+                    className={`ios-copy-btn ${copied ? "copied" : ""}`}
+                    onClick={() => handleCopy()}
+                    aria-label="Copy short link to clipboard"
+                  >
+                    {copied ? t.termCopiedBtn : t.termCopyBtn}
+                  </button>
                 </div>
+
+                {/* Footer with constraints info */}
+                {(result.maxClicks !== null || result.expiresAt !== null) && (
+                  <div className="ios-card-footer">
+                    {result.maxClicks !== null && (
+                      <div>
+                        <span>{t.termLabelClicks}: </span>
+                        <span style={{ fontWeight: 600 }}>
+                          0 / {result.maxClicks}
+                        </span>
+                      </div>
+                    )}
+                    {result.expiresAt !== null && (
+                      <div>
+                        <span>{t.termLabelExpires}: </span>
+                        <span style={{ fontWeight: 600 }}>
+                          {new Date(result.expiresAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
           </div>
