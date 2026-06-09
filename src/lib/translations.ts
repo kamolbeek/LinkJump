@@ -7,9 +7,9 @@ export const translations = {
     useCasesNav: "Foydalanish",
     
     // Hero
-    heroTitleLine1: "Tunnellarni Native",
-    heroTitleLine2: "Ilovlarga Yo'naltirish.",
-    heroSubtitle: "In-app brauzerlarni chetlab o'tadigan aqlli yo'naltirish tizimi. Hech qanday sozlashlarsiz. Havolani native ilovada bir zumda ochadi.",
+    heroTitleLine1: "Havolalarni to'g'ridan-to'g'ri",
+    heroTitleLine2: "Ilovalarda Ochish.",
+    heroSubtitle: "Ijtimoiy tarmoq havolalarini in-app (ichki) brauzerlarni chetlab o'tib, telefoningizdagi rasmiy ilovada bir zumda ochuvchi aqlli yo'naltirish tizimi.",
     
     // Input
     placeholder: "Havolani joylashtiring (masalan, https://youtube.com/...)",

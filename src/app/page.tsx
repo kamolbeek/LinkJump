@@ -356,7 +356,7 @@ export default function HomePage() {
         <section className="hero-sec">
           <h1 className="display-title fade-up">
             {lang === "uz" ? (
-              <>Tunnellarni Native<br />Ilovlarga Yo'naltirish.</>
+              <>Havolalarni to'g'ridan-to'g'ri<br />Ilovalarda Ochish.</>
             ) : lang === "ru" ? (
               <>Туннелирование ссылок<br />в нативные приложения.</>
             ) : (
