@@ -10,6 +10,8 @@ interface LinkResult {
   shortUrl: string;
   platform: string;
   originalUrl: string;
+  maxClicks: number | null;
+  expiresAt: string | null;
 }
 
 export default function HomePage() {
@@ -25,6 +27,9 @@ export default function HomePage() {
   const [voiceLog, setVoiceLog] = useState<string | null>(null);
   const scrollBarRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
+  const [maxClicks, setMaxClicks] = useState<string>("");
+  const [expiresIn, setExpiresIn] = useState<string>("");
+  const [showLimits, setShowLimits] = useState(false);
 
   // Load language and theme preference from localStorage on mount
   useEffect(() => {
@@ -92,6 +97,10 @@ export default function HomePage() {
       setError(t.errorNotFound);
     } else if (errorParam === "server-error") {
       setError(t.errorServerError);
+    } else if (errorParam === "expired") {
+      setError(t.errorExpired);
+    } else if (errorParam === "limit-reached") {
+      setError(t.errorLimitReached);
     }
   }, [lang, t.errorNotFound, t.errorServerError]);
 
@@ -128,7 +137,11 @@ export default function HomePage() {
       const response = await fetch("/api/create-link", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: activeUrl.trim() }),
+        body: JSON.stringify({
+          url: activeUrl.trim(),
+          maxClicks: maxClicks ? parseInt(maxClicks) : null,
+          expiresIn: expiresIn ? parseInt(expiresIn) : null,
+        }),
       });
 
       const data = await response.json();
@@ -371,6 +384,103 @@ export default function HomePage() {
               </button>
             </div>
 
+            {/* Cheklovlar (ixtiyoriy) */}
+            <div
+              style={{ marginTop: "0.75rem" }}
+            >
+              <button
+                type="button"
+                onClick={() => setShowLimits(!showLimits)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "var(--text-gray)",
+                  fontSize: "13px",
+                  cursor: "pointer",
+                  fontFamily: "'JetBrains Mono', monospace",
+                  padding: "4px 0",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                }}
+                aria-expanded={showLimits}
+              >
+                <span style={{ transform: showLimits ? "rotate(90deg)" : "rotate(0deg)", transition: "transform 0.2s", display: "inline-block" }}>▶</span>
+                {t.limitSectionTitle}
+              </button>
+              {showLimits && (
+                <div
+                  className="limits-panel"
+                  style={{
+                    marginTop: "0.5rem",
+                    padding: "1rem",
+                    background: "rgba(0,0,0,0.15)",
+                    border: "1px solid rgba(255,255,255,0.04)",
+                    borderRadius: "8px",
+                    display: "flex",
+                    gap: "1rem",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  {/* Maksimal bosish soni */}
+                  <div style={{ flex: "1", minWidth: "140px" }}>
+                    <label style={{ fontSize: "12px", color: "var(--text-gray)", fontFamily: "'JetBrains Mono', monospace", marginBottom: "6px", display: "block" }}>
+                      {t.limitMaxClicks}
+                    </label>
+                    <input
+                      type="number"
+                      min="1"
+                      value={maxClicks}
+                      onChange={(e) => setMaxClicks(e.target.value)}
+                      placeholder={t.limitMaxClicksPlaceholder}
+                      style={{
+                        width: "100%",
+                        padding: "8px 12px",
+                        background: "rgba(0,0,0,0.3)",
+                        border: "1px solid rgba(255,255,255,0.08)",
+                        borderRadius: "6px",
+                        color: "var(--text-primary)",
+                        fontSize: "13px",
+                        fontFamily: "'JetBrains Mono', monospace",
+                        outline: "none",
+                      }}
+                      aria-label={t.limitMaxClicks}
+                    />
+                  </div>
+                  {/* Muddat */}
+                  <div style={{ flex: "1", minWidth: "140px" }}>
+                    <label style={{ fontSize: "12px", color: "var(--text-gray)", fontFamily: "'JetBrains Mono', monospace", marginBottom: "6px", display: "block" }}>
+                      {t.limitExpires}
+                    </label>
+                    <select
+                      value={expiresIn}
+                      onChange={(e) => setExpiresIn(e.target.value)}
+                      style={{
+                        width: "100%",
+                        padding: "8px 12px",
+                        background: "rgba(0,0,0,0.3)",
+                        border: "1px solid rgba(255,255,255,0.08)",
+                        borderRadius: "6px",
+                        color: "var(--text-primary)",
+                        fontSize: "13px",
+                        fontFamily: "'JetBrains Mono', monospace",
+                        outline: "none",
+                        cursor: "pointer",
+                      }}
+                      aria-label={t.limitExpires}
+                    >
+                      <option value="">{t.limitNoLimit}</option>
+                      <option value="60">{t.limit1Hour}</option>
+                      <option value="360">{t.limit6Hours}</option>
+                      <option value="1440">{t.limit24Hours}</option>
+                      <option value="10080">{t.limit7Days}</option>
+                      <option value="43200">{t.limit30Days}</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Error logs inside terminal design */}
             {error && (
               <div className="terminal-error" id="error-message" role="alert" aria-live="assertive">
@@ -449,6 +559,36 @@ export default function HomePage() {
                       {copied ? t.termCopiedBtn : t.termCopyBtn}
                     </button>
                   </div>
+
+                  {/* Cheklov ma'lumotlari */}
+                  {(result.maxClicks !== null || result.expiresAt !== null) && (
+                    <div style={{
+                      marginTop: "0.75rem",
+                      padding: "0.5rem 0.75rem",
+                      background: "rgba(234, 179, 8, 0.05)",
+                      border: "1px solid rgba(234, 179, 8, 0.15)",
+                      borderRadius: "6px",
+                      fontFamily: "'JetBrains Mono', monospace",
+                      fontSize: "12px",
+                    }}>
+                      <div style={{ display: "flex", gap: "1rem" }}>
+                        <div>
+                          <span style={{ color: "#71717a" }}>{t.termLabelClicks}: </span>
+                          <span style={{ color: "#eab308" }}>
+                            {result.maxClicks !== null ? `0 / ${result.maxClicks}` : t.termUnlimited}
+                          </span>
+                        </div>
+                        <div>
+                          <span style={{ color: "#71717a" }}>{t.termLabelExpires}: </span>
+                          <span style={{ color: "#eab308" }}>
+                            {result.expiresAt
+                              ? new Date(result.expiresAt).toLocaleString()
+                              : t.termNever}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}

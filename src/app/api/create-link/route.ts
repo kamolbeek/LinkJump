@@ -8,7 +8,7 @@ import { generateUniqueCode } from '@/lib/generate-code'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { url } = body
+    const { url, maxClicks, expiresIn } = body
 
     // Validate URL
     const validation = validateUrl(url)
@@ -30,6 +30,17 @@ export async function POST(request: NextRequest) {
     // Generate unique code
     const code = await generateUniqueCode()
 
+    // Muddat hisoblash (expiresIn daqiqalarda keladi)
+    let expiresAt: Date | null = null
+    if (expiresIn && typeof expiresIn === 'number' && expiresIn > 0) {
+      expiresAt = new Date(Date.now() + expiresIn * 60 * 1000)
+    }
+
+    // Bosish cheklovi
+    const parsedMaxClicks = maxClicks && typeof maxClicks === 'number' && maxClicks > 0
+      ? maxClicks
+      : null
+
     // Save to database
     const link = await prisma.link.create({
       data: {
@@ -37,10 +48,17 @@ export async function POST(request: NextRequest) {
         originalUrl: trimmedUrl,
         normalizedUrl,
         platform,
+        maxClicks: parsedMaxClicks,
+        expiresAt,
       },
     })
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3001'
+    let baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+    if (!baseUrl) {
+      const protocol = request.nextUrl.protocol || 'https:'
+      const host = request.headers.get('host') || 'linkjump.vercel.app'
+      baseUrl = `${protocol}//${host}`
+    }
     const shortUrl = `${baseUrl}/r/${link.code}`
 
     return NextResponse.json({
@@ -49,6 +67,8 @@ export async function POST(request: NextRequest) {
       platform: link.platform,
       originalUrl: link.originalUrl,
       normalizedUrl: link.normalizedUrl,
+      maxClicks: link.maxClicks,
+      expiresAt: link.expiresAt ? link.expiresAt.toISOString() : null,
     })
   } catch (error) {
     console.error('Error creating link:', error)

@@ -22,6 +22,8 @@ export const translations = {
     errorNetwork: "Error: Tarmoq bilan ulanishda xatolik yuz berdi.",
     errorNotFound: "Error: So'ralgan qisqa havola serverdan topilmadi.",
     errorServerError: "Error: Baza bilan ulanish yo'qoldi. Qayta urinib ko'ring.",
+    errorExpired: "Error: Bu havola muddati tugagan. Yangi havola yarating.",
+    errorLimitReached: "Error: Bu havola bosish chekloviga yetdi. Yangi havola yarating.",
     
     // Terminal
     terminalTitle: "LINKJUMP EXPOSE CHIQISHI",
@@ -62,7 +64,23 @@ export const translations = {
     redLaunching: "Mobil ilova ishga tushirilmoqda...",
     redTimeout: "Ilovani ochib bo'lmadi. Brauzer orqali ochilmoqda...",
     redHandshake: "Ulanish yakunlandi. Havola ilovada ochildi.",
-    redTitle: "LINKJUMP REDIRECT ENGINE v2"
+    redTitle: "LINKJUMP REDIRECT ENGINE v2",
+
+    // Cheklov UI
+    limitSectionTitle: "⚙️ Cheklovlar (ixtiyoriy)",
+    limitMaxClicks: "Maks. bosish soni",
+    limitMaxClicksPlaceholder: "masalan, 100",
+    limitExpires: "Amal qilish muddati",
+    limitNoLimit: "Cheksiz",
+    limit1Hour: "1 soat",
+    limit6Hours: "6 soat",
+    limit24Hours: "24 soat",
+    limit7Days: "7 kun",
+    limit30Days: "30 kun",
+    termLabelClicks: "Bosishlar",
+    termLabelExpires: "Muddati",
+    termUnlimited: "cheksiz",
+    termNever: "muddatsiz"
   },
   ru: {
     // Nav
@@ -85,6 +103,8 @@ export const translations = {
     errorNetwork: "Error: Ошибка сетевого соединения.",
     errorNotFound: "Error: Запрошенная короткая ссылка не найдена на сервере.",
     errorServerError: "Error: Соединение с базой данных потеряно. Попробуйте снова.",
+    errorExpired: "Error: Срок действия этой ссылки истёк. Создайте новую.",
+    errorLimitReached: "Error: Лимит переходов для этой ссылки исчерпан. Создайте новую.",
     
     // Terminal
     terminalTitle: "ВЫВОД LINKJUMP EXPOSE",
@@ -125,7 +145,23 @@ export const translations = {
     redLaunching: "Запуск нативного приложения...",
     redTimeout: "Не удалось открыть приложение. Открытие в браузере...",
     redHandshake: "Соединение завершено. Ссылка открыта в приложении.",
-    redTitle: "LINKJUMP REDIRECT ENGINE v2"
+    redTitle: "LINKJUMP REDIRECT ENGINE v2",
+
+    // Ограничения UI
+    limitSectionTitle: "⚙️ Ограничения (необязательно)",
+    limitMaxClicks: "Макс. кликов",
+    limitMaxClicksPlaceholder: "напр. 100",
+    limitExpires: "Срок действия",
+    limitNoLimit: "Без ограничений",
+    limit1Hour: "1 час",
+    limit6Hours: "6 часов",
+    limit24Hours: "24 часа",
+    limit7Days: "7 дней",
+    limit30Days: "30 дней",
+    termLabelClicks: "Клики",
+    termLabelExpires: "Срок",
+    termUnlimited: "безлимитно",
+    termNever: "бессрочно"
   },
   en: {
     // Nav
@@ -148,6 +184,8 @@ export const translations = {
     errorNetwork: "Error: Network connection handshake failed.",
     errorNotFound: "Error: Requested short link not found on server.",
     errorServerError: "Error: Database connection lost. Try again.",
+    errorExpired: "Error: This link has expired. Create a new one.",
+    errorLimitReached: "Error: This link has reached its click limit. Create a new one.",
     
     // Terminal
     terminalTitle: "LINKJUMP OUTPUT",
@@ -188,6 +226,22 @@ export const translations = {
     redLaunching: "Exposing local environment to native application...",
     redTimeout: "App launch timeout. Falling back to browser gateway...",
     redHandshake: "Handshake completed. Tunnel open inside native app.",
-    redTitle: "LINKJUMP REDIRECT ENGINE v2"
+    redTitle: "LINKJUMP REDIRECT ENGINE v2",
+
+    // Limits UI
+    limitSectionTitle: "⚙️ Limits (optional)",
+    limitMaxClicks: "Max clicks",
+    limitMaxClicksPlaceholder: "e.g. 100",
+    limitExpires: "Expires after",
+    limitNoLimit: "Unlimited",
+    limit1Hour: "1 hour",
+    limit6Hours: "6 hours",
+    limit24Hours: "24 hours",
+    limit7Days: "7 days",
+    limit30Days: "30 days",
+    termLabelClicks: "Clicks",
+    termLabelExpires: "Expires",
+    termUnlimited: "unlimited",
+    termNever: "never"
   }
 };

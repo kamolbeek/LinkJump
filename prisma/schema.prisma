@@ -8,12 +8,15 @@ datasource db {
 }
 
 model Link {
-  id            String   @id @default(cuid())
-  code          String   @unique
+  id            String    @id @default(cuid())
+  code          String    @unique
   originalUrl   String
-  normalizedUrl String   @default("")
-  platform      String   @default("unknown")
-  createdAt     DateTime @default(now())
+  normalizedUrl String    @default("")
+  platform      String    @default("unknown")
+  clickCount    Int       @default(0)
+  maxClicks     Int?      // null = cheksiz (unlimited)
+  expiresAt     DateTime? // null = muddatsiz (never expires)
+  createdAt     DateTime  @default(now())
 
   @@index([code])
 }

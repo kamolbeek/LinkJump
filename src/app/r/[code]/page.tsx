@@ -1,4 +1,4 @@
-import { notFound, redirect } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import RedirectClient from './RedirectClient';
 
@@ -17,6 +17,22 @@ export default async function RedirectPage({ params }: Props) {
   if (!link) {
     redirect('/?error=not-found');
   }
+
+  // Muddat tekshirish — agar vaqt o'tgan bo'lsa, yo'naltirmaydi
+  if (link.expiresAt && new Date() > link.expiresAt) {
+    redirect('/?error=expired');
+  }
+
+  // Bosish cheklovi tekshirish — agar limit tugagan bo'lsa, yo'naltirmaydi
+  if (link.maxClicks !== null && link.clickCount >= link.maxClicks) {
+    redirect('/?error=limit-reached');
+  }
+
+  // Bosish sonini oshirish (increment)
+  await prisma.link.update({
+    where: { code },
+    data: { clickCount: { increment: 1 } },
+  });
 
   return (
     <RedirectClient
