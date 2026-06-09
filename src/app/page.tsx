@@ -102,7 +102,7 @@ export default function HomePage() {
     } else if (errorParam === "limit-reached") {
       setError(t.errorLimitReached);
     }
-  }, [lang, t.errorNotFound, t.errorServerError]);
+  }, [lang, t.errorNotFound, t.errorServerError, t.errorExpired, t.errorLimitReached]);
 
   // Detect platform
   useEffect(() => {
